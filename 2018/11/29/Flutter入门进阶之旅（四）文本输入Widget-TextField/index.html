@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="上一篇文章中我们一起学习了什么是Text跟如何给Text设置字体样式以及Text Widget的一些常用属性Flutter入门进阶之旅（三） Text Widgets，通过对Text的学习我们了解到Text是用于显示文本的，如果对显示的文本有一些特殊的要求，比如字体样式，文字颜色我们可以通过TextStyle去给Text指定style来做个性化定制，这一点跟原生Android的TextView非">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter入门进阶之旅（四）文本输入Widget TextField">
+<meta property="og:url" content="http://yoursite.com/2018/11/29/Flutter入门进阶之旅（四）文本输入Widget-TextField/index.html">
+<meta property="og:site_name" content="flutter入门进阶之旅">
+<meta property="og:description" content="上一篇文章中我们一起学习了什么是Text跟如何给Text设置字体样式以及Text Widget的一些常用属性Flutter入门进阶之旅（三） Text Widgets，通过对Text的学习我们了解到Text是用于显示文本的，如果对显示的文本有一些特殊的要求，比如字体样式，文字颜色我们可以通过TextStyle去给Text指定style来做个性化定制，这一点跟原生Android的TextView非">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-72e8e7fdc6da137c.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-eba78b2bd4465a9d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-6fc84dd69896f80d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-ddab6f73b0d05f7e?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-36b1c05fb0734ec1.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2019-05-31T05:45:28.295Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flutter入门进阶之旅（四）文本输入Widget TextField">
+<meta name="twitter:description" content="上一篇文章中我们一起学习了什么是Text跟如何给Text设置字体样式以及Text Widget的一些常用属性Flutter入门进阶之旅（三） Text Widgets，通过对Text的学习我们了解到Text是用于显示文本的，如果对显示的文本有一些特殊的要求，比如字体样式，文字颜色我们可以通过TextStyle去给Text指定style来做个性化定制，这一点跟原生Android的TextView非">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7274320-72e8e7fdc6da137c.gif?imageMogr2/auto-orient/strip">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2018/11/29/Flutter入门进阶之旅（四）文本输入Widget-TextField/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Flutter入门进阶之旅（四）文本输入Widget TextField | flutter入门进阶之旅</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">flutter入门进阶之旅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/xiedong11" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/Flutter入门进阶之旅（四）文本输入Widget-TextField/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢栋">
+      <meta itemprop="description" content="flutter入门进阶之旅">
+      <meta itemprop="image" content="/images/xiedong.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="flutter入门进阶之旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flutter入门进阶之旅（四）文本输入Widget TextField
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-29 13:38:05" itemprop="dateCreated datePublished" datetime="2018-11-29T13:38:05+08:00">2018-11-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-31 13:45:28" itemprop="dateModified" datetime="2019-05-31T13:45:28+08:00">2019-05-31</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>上一篇文章中我们一起学习了什么是Text跟如何给Text设置字体样式以及Text Widget的一些常用属性Flutter入门进阶之旅（三） Text Widgets，通过对Text的学习我们了解到Text是用于显示文本的，如果对显示的文本有一些特殊的要求，比如字体样式，文字颜色我们可以通过TextStyle去给Text指定style来做个性化定制，这一点跟原生Android的TextView非常类似，有了文字显示就肯定会有文字输入，今天我们就一起来学习一下Flutter中的文字输入Widget TextField。</p>
+</blockquote>
+<h5 id="先来看下TextField的构造方法"><a href="#先来看下TextField的构造方法" class="headerlink" title="先来看下TextField的构造方法"></a>先来看下TextField的构造方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">const TextField(&#123;</span><br><span class="line">    Key key,</span><br><span class="line">    this.controller,           ////控制器，控制TextField文字</span><br><span class="line">    this.focusNode,</span><br><span class="line">    this.decoration = const InputDecoration(),    //输入器装饰</span><br><span class="line">    TextInputType keyboardType,   ////输入的类型</span><br><span class="line">    this.textInputAction,</span><br><span class="line">    this.textCapitalization = TextCapitalization.none,</span><br><span class="line">    this.style,</span><br><span class="line">    this.textAlign = TextAlign.start,   //文字显示位置</span><br><span class="line">    this.autofocus = false,</span><br><span class="line">    this.obscureText = false,</span><br><span class="line">    this.autocorrect = true,</span><br><span class="line">    this.maxLines = 1,</span><br><span class="line">    this.maxLength,</span><br><span class="line">    this.maxLengthEnforced = true,</span><br><span class="line">    this.onChanged,                //文字改变触发</span><br><span class="line">    this.onEditingComplete,   //当用户提交可编辑内容时调用</span><br><span class="line">    this.onSubmitted,   ////文字提交触发（键盘按键）</span><br><span class="line">    this.inputFormatters,</span><br><span class="line">    this.enabled,</span><br><span class="line">    this.cursorWidth = 2.0,</span><br><span class="line">    this.cursorRadius,</span><br><span class="line">    this.cursorColor,</span><br><span class="line">    this.keyboardAppearance,</span><br><span class="line">    this.scrollPadding = const EdgeInsets.all(20.0),</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-72e8e7fdc6da137c.gif?imageMogr2/auto-orient/strip" alt="image"></p>
+<blockquote>
+<p>通过上面的构造方法跟预览效果图，熟悉android开发的小伙伴们是不是有种似曾相识的感觉，Flutter的TextField跟原生Android中的EditText用法包括部分属性名几乎都是一样的，比如我们可以通过keyboardType来指定唤起软件盘时的输入方式，例如上图的两个输入框属性设置：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line">import &apos;package:flutter/services.dart&apos;;</span><br><span class="line"> </span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(new MaterialApp(home: new PullToRefreshDemo()));</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class PullToRefreshDemo extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return Scaffold(</span><br><span class="line">      appBar: new AppBar(</span><br><span class="line">        title: new Text(&quot;文本输入&quot;),</span><br><span class="line">      ),</span><br><span class="line">      body: new Center(</span><br><span class="line">          child: new Column(</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          new Text(&quot;简单文本输入框&quot;,style: new TextStyle(fontSize: 20.0)),</span><br><span class="line">          new TextField(keyboardType: TextInputType.text,),  //指定输入方式为文本输入</span><br><span class="line">          new TextField(keyboardType: TextInputType.number,),//指定唤起软键盘时默认显示数字键盘</span><br><span class="line"> </span><br><span class="line">        ],</span><br><span class="line">      )),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>通过上面的构造方法我们留意到TextField给我提供了onChanged、onSubmitted、OnEditingComplete回调方法帮助我们监听输入框的内容变化、编辑提交、编辑完成等事件，我们给输入框绑定上述监听方法做下测试：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">new TextField(</span><br><span class="line">            onSubmitted: (value)&#123;</span><br><span class="line">              print(&quot;------------文字提交触发（键盘按键）--&quot;);</span><br><span class="line">            &#125;,</span><br><span class="line">            onEditingComplete: ()&#123;</span><br><span class="line">              print(&quot;----------------编辑完成---&quot;);</span><br><span class="line">            &#125;,</span><br><span class="line">            onChanged: (value)&#123;</span><br><span class="line">              print(&quot;----------------输入框中内容为:$value--&quot;);</span><br><span class="line">            &#125;,</span><br><span class="line">            keyboardType: TextInputType.text,</span><br><span class="line">          ),</span><br></pre></td></tr></table></figure>
+
+<p>唤起软键盘后在输入框中输入123456，log控制台打印出：<br><img src="http://upload-images.jianshu.io/upload_images/7274320-eba78b2bd4465a9d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<blockquote>
+<p>到此对输入框的基本使用你已经完全get到了，但是现实开发过程中，可能我们会需要给输入框指定一些辅助性的说明内容，比如输入框未输入内容时添加hint提示，或者在输入框的旁边添加Icon指示，或者输入框内部文字的显示样式、背景色等等，这些辅助性的设置在Flutter中统一有一个叫做InputDecoration的装饰器来完成操作，我们先来看下InputDecoration的构造方法，然后来简单尝试下几个日常开发中常用的操作。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">const InputDecoration(&#123;</span><br><span class="line">    this.icon, //输入框左侧添加个图标</span><br><span class="line">    this.labelText,//输入框获取焦点/有内容 会移动到左上角，否则在输入框内labelTex的位置</span><br><span class="line">    this.labelStyle,</span><br><span class="line">    this.helperText,</span><br><span class="line">    this.helperStyle,</span><br><span class="line">    this.hintText, //未输入文字时，输入框中的提示文字</span><br><span class="line">    this.hintStyle,</span><br><span class="line">    this.errorText,</span><br><span class="line">    this.errorStyle,</span><br><span class="line">    this.errorMaxLines,</span><br><span class="line">    this.isDense,</span><br><span class="line">    this.contentPadding,</span><br><span class="line">    this.prefixIcon, //输入框内侧左面的控件</span><br><span class="line">    this.prefix,</span><br><span class="line">    this.prefixText,</span><br><span class="line">    this.prefixStyle,</span><br><span class="line">    this.suffixIcon,//输入框内侧右面的图标</span><br><span class="line">    this.suffix,</span><br><span class="line">    this.suffixText,</span><br><span class="line">    this.suffixStyle,</span><br><span class="line">    this.counterText,</span><br><span class="line">    this.counterStyle,</span><br><span class="line">    this.filled,</span><br><span class="line">    this.fillColor,</span><br><span class="line">    this.errorBorder,</span><br><span class="line">    this.focusedBorder,</span><br><span class="line">    this.focusedErrorBorder,</span><br><span class="line">    this.disabledBorder,</span><br><span class="line">    this.enabledBorder,</span><br><span class="line">    this.border,  //增加一个边框</span><br><span class="line">    this.enabled = true,</span><br><span class="line">    this.semanticCounterText,</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>给输入框添加输入辅助性输入说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">body: new Center(</span><br><span class="line">         child: new TextField(</span><br><span class="line">           decoration: new InputDecoration(</span><br><span class="line">               labelText: &quot;请输入内容&quot;,//输入框内无文字时提示内容，有内容时会自动浮在内容上方</span><br><span class="line">               helperText: &quot;随便输入文字或数字&quot;, //输入框底部辅助性说明文字</span><br><span class="line">               prefixIcon: new Icon(Icons.print), //输入框左边图标</span><br><span class="line">               suffixIcon: new Icon(Icons.picture_as_pdf), //输入框右边图片</span><br><span class="line">               contentPadding: const EdgeInsets.only(bottom:15.0)),</span><br><span class="line">           keyboardType: TextInputType.number,</span><br><span class="line">         ),</span><br><span class="line">       ));</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-6fc84dd69896f80d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"><br>通过给InputDecoration设置border给输入框添加边框：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">body: new Center(</span><br><span class="line">          child: new TextField(</span><br><span class="line">            decoration: new InputDecoration(</span><br><span class="line">                border: new OutlineInputBorder(  //添加边框</span><br><span class="line">                  gapPadding: 10.0,</span><br><span class="line">                  borderRadius: BorderRadius.circular(20.0),</span><br><span class="line">                ),</span><br><span class="line">                prefixIcon: new Icon(Icons.print),</span><br><span class="line">                contentPadding: const EdgeInsets.all(15.0)),</span><br><span class="line">            keyboardType: TextInputType.number,</span><br><span class="line">          ),</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-ddab6f73b0d05f7e?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<blockquote>
+<p>其他样式跟属性读者可自行运行体验，我就不逐一列举说明了，总之参考文档再结合原生开发的经验去使用TextField还是比较简单的。下面我分享一个完整的登录UI的例子供大家参考：</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-36b1c05fb0734ec1.gif?imageMogr2/auto-orient/strip" alt="image"></p>
+<h3 id="完整代码："><a href="#完整代码：" class="headerlink" title="完整代码："></a>完整代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">import &apos;package:flutter/material.dart&apos;;</span><br><span class="line"> </span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(new MaterialApp(home: new MyApp()));</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class MyApp extends StatefulWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  State&lt;StatefulWidget&gt; createState() &#123;</span><br><span class="line">    return new MyAppState();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">class MyAppState extends State&lt;MyApp&gt; &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    TextEditingController _userPhoneController = new TextEditingController();</span><br><span class="line">    TextEditingController _userPasswordController = new TextEditingController();</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 清空输入框内容</span><br><span class="line">     */</span><br><span class="line">    void onTextClear() &#123;</span><br><span class="line">      setState(() &#123;</span><br><span class="line">        _userPhoneController.text = &quot;&quot;;</span><br><span class="line">        _userPasswordController.text = &quot;&quot;;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    return new Scaffold(</span><br><span class="line">        appBar: new AppBar(</span><br><span class="line">          title: new Text(&quot;登录&quot;),</span><br><span class="line">        ),</span><br><span class="line">        body: new Column(</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            new TextField(</span><br><span class="line">              controller: _userPhoneController,</span><br><span class="line">              keyboardType: TextInputType.number,</span><br><span class="line">              decoration: new InputDecoration(</span><br><span class="line">                  contentPadding: const EdgeInsets.all(10.0),</span><br><span class="line">                  icon: new Icon(Icons.phone),</span><br><span class="line">                  labelText: &quot;请输入手机号&quot;,</span><br><span class="line">                  helperText: &quot;注册时填写的手机号&quot;),</span><br><span class="line">              onChanged: (String str) &#123;</span><br><span class="line">                //onChanged是每次输入框内每次文字变更触发的回调</span><br><span class="line">                print(&apos;手机号为：$str----------&apos;);</span><br><span class="line">              &#125;,</span><br><span class="line">              onSubmitted: (String str) &#123;</span><br><span class="line">                //onSubmitted是用户提交而触发的回调&#123;当用户点击提交按钮（输入法回车键）&#125;</span><br><span class="line">                print(&apos;最终手机号为:$str---------------&apos;);</span><br><span class="line">              &#125;,</span><br><span class="line">            ),</span><br><span class="line">            new TextField(</span><br><span class="line">              controller: _userPasswordController,</span><br><span class="line">              keyboardType: TextInputType.text,</span><br><span class="line">              decoration: new InputDecoration(</span><br><span class="line">                  contentPadding: const EdgeInsets.all(10.0),</span><br><span class="line">                  icon: new Icon(Icons.nature_people),</span><br><span class="line">                  labelText: &quot;请输入名字&quot;,</span><br><span class="line">//                  hintText: &quot;fdsfdss&quot;,</span><br><span class="line">                  helperText: &quot;注册名字&quot;),</span><br><span class="line">            ),</span><br><span class="line">            new Builder(builder: (BuildContext context) &#123;</span><br><span class="line">              return new RaisedButton(</span><br><span class="line">                onPressed: () &#123;</span><br><span class="line">                  if (_userPasswordController.text.toString() == &quot;10086&quot; &amp;&amp;</span><br><span class="line">                      _userPhoneController.text.toString() == &quot;10086&quot;) &#123;</span><br><span class="line">                    Scaffold.of(context)</span><br><span class="line">                        .showSnackBar(new SnackBar(content: new Text(&quot;校验通过&quot;)));</span><br><span class="line">                  &#125; else &#123;</span><br><span class="line">                    Scaffold.of(context)</span><br><span class="line">                        .showSnackBar(new SnackBar(content: new Text(&quot;校验有问题，请重新输入&quot;)));</span><br><span class="line">                    onTextClear(); //情况输入内容，让用户重新输入</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                color: Colors.blue,</span><br><span class="line">                highlightColor: Colors.deepPurple,</span><br><span class="line">                disabledColor: Colors.cyan,</span><br><span class="line">                child: new Text(</span><br><span class="line">                  &quot;登录&quot;,</span><br><span class="line">                  style: new TextStyle(color: Colors.white),</span><br><span class="line">                ),</span><br><span class="line">              );</span><br><span class="line">            &#125;)</span><br><span class="line">          ],</span><br><span class="line">        ));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/19/Flutter入门进阶之旅（三）Text-Widgets/" rel="next" title="Flutter入门进阶之旅（三）Text Widgets">
+                <i class="fa fa-chevron-left"></i> Flutter入门进阶之旅（三）Text Widgets
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/03/Flutter入门进阶之旅（五）Image-Widget/" rel="prev" title="Flutter入门进阶之旅（五）Image Widget">
+                Flutter入门进阶之旅（五）Image Widget <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/xiedong.png" alt="谢栋">
+            
+              <p class="site-author-name" itemprop="name">谢栋</p>
+              <div class="site-description motion-element" itemprop="description">flutter入门进阶之旅</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/xiedong11" title="GitHub &rarr; https://github.com/xiedong11" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:xiedong11@aliyun.com" title="E-Mail &rarr; mailto:xiedong11@aliyun.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/xieluoxixi" title="新浪微博 &rarr; https://weibo.com/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/xieluoxixi" title="简书博客 &rarr; https://blog.csdn.net/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>简书博客</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/xieluoxixi" title="CSDN &rarr; https://blog.csdn.net/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://juejin.im/user/5cb416cef265da03893286ea" title="掘金 &rarr; https://juejin.im/user/5cb416cef265da03893286ea" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#先来看下TextField的构造方法"><span class="nav-number">1.</span> <span class="nav-text">先来看下TextField的构造方法</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#完整代码："><span class="nav-number"></span> <span class="nav-text">完整代码：</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢栋</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

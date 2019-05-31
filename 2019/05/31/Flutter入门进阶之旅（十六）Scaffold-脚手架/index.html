@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在本栏的前面章节的学习中，我们基本上把Flutter中所有的常用布局、组件包括多页面跳转路由都介绍过了，细心的读者可能会发现在前面的课程中我们每次新建一个Flutter Page的时候都会在根布局的build方法中直接return一个Scaffold然后，再通过配置Scaffold中的相关属性来快速的渲染页面布局：没错Scaffold的出现就是为了帮助我们实现基本的 Material Desig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter入门进阶之旅（十六）Scaffold 脚手架">
+<meta property="og:url" content="http://yoursite.com/2019/05/31/Flutter入门进阶之旅（十六）Scaffold-脚手架/index.html">
+<meta property="og:site_name" content="flutter入门进阶之旅">
+<meta property="og:description" content="在本栏的前面章节的学习中，我们基本上把Flutter中所有的常用布局、组件包括多页面跳转路由都介绍过了，细心的读者可能会发现在前面的课程中我们每次新建一个Flutter Page的时候都会在根布局的build方法中直接return一个Scaffold然后，再通过配置Scaffold中的相关属性来快速的渲染页面布局：没错Scaffold的出现就是为了帮助我们实现基本的 Material Desig">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-56d2b0a1579cc9d7.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-d82bedaf86ec7684.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-2e20fe9312f0cc36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-c9b29a0db60cb501.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-832ad1dce81928ac.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-f64d2e3223be5670.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-b3128cbbd0e621c9.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-d91012c050e11450.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-263f65f87db75b26.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-09becd91df44dc3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-50997608c35a95fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-e66c9d5a43abc8e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-e8321ca6156754d1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-47b8d734d6729c4c.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-a780afd5080aa50c.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-68029acff90c2086.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-4fa84937bf58d1c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-1665a2121e120ebf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7274320-c19377455c1700e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-05-31T05:52:13.935Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flutter入门进阶之旅（十六）Scaffold 脚手架">
+<meta name="twitter:description" content="在本栏的前面章节的学习中，我们基本上把Flutter中所有的常用布局、组件包括多页面跳转路由都介绍过了，细心的读者可能会发现在前面的课程中我们每次新建一个Flutter Page的时候都会在根布局的build方法中直接return一个Scaffold然后，再通过配置Scaffold中的相关属性来快速的渲染页面布局：没错Scaffold的出现就是为了帮助我们实现基本的 Material Desig">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7274320-56d2b0a1579cc9d7.gif?imageMogr2/auto-orient/strip">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/05/31/Flutter入门进阶之旅（十六）Scaffold-脚手架/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Flutter入门进阶之旅（十六）Scaffold 脚手架 | flutter入门进阶之旅</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">flutter入门进阶之旅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/xiedong11" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/31/Flutter入门进阶之旅（十六）Scaffold-脚手架/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢栋">
+      <meta itemprop="description" content="flutter入门进阶之旅">
+      <meta itemprop="image" content="/images/xiedong.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="flutter入门进阶之旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flutter入门进阶之旅（十六）Scaffold 脚手架
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-31 13:41:13 / 修改时间：13:52:13" itemprop="dateCreated datePublished" datetime="2019-05-31T13:41:13+08:00">2019-05-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在本栏的前面章节的学习中，我们基本上把Flutter中所有的常用布局、组件包括多页面跳转路由都介绍过了，细心的读者可能会发现在前面的课程中我们每次新建一个<code>Flutter Page</code>的时候都会在根布局的<code>build</code>方法中直接return一个<code>Scaffold</code>然后，再通过配置Scaffold中的相关属性来快速的渲染页面布局：没错Scaffold的出现就是为了帮助我们实现基本的 Material Design 布局结构，简化我们页面开发工作，我们可以形象的把<code>Scaffold</code>理解为页面搭建的<code>脚手架</code></p>
+</blockquote>
+<h3 id="课程学习目标"><a href="#课程学习目标" class="headerlink" title="课程学习目标"></a>课程学习目标</h3><h5 id="了解并掌握Scaffold中提供的快速搭建页面的脚手架方法"><a href="#了解并掌握Scaffold中提供的快速搭建页面的脚手架方法" class="headerlink" title="了解并掌握Scaffold中提供的快速搭建页面的脚手架方法"></a>了解并掌握Scaffold中提供的快速搭建页面的脚手架方法</h5><ul>
+<li><code>appBar</code>: 显示在界面顶部的一个菜单导航栏</li>
+<li><code>body</code>：页面中显示主要内容的区域，可任意指定Widget</li>
+<li><code>floatingActionButton</code>： 悬浮按钮（类似原生Android中的floatingActionButton）</li>
+<li><code>drawer、endDrawer</code>：分别用于在左右两侧边栏展示抽屉菜单</li>
+<li><code>bottomNavigationBar</code>：显示在底部的导航栏按钮栏</li>
+</ul>
+<p>在Flutter脚手架中给我们提供了上述用于快速构建页面的常用属性，开发者可根据自己的页面需求，选择性的引入不同属性达到定制出不同UI呈现的目的，关于Scaffold中的其他属性，我就不逐个讲解了，下面我结合代码跟大家一块测试下上述常用方法。</p>
+<h3 id="Scaffold课程完整效果图"><a href="#Scaffold课程完整效果图" class="headerlink" title="Scaffold课程完整效果图"></a>Scaffold课程完整效果图</h3><p><img src="http://upload-images.jianshu.io/upload_images/7274320-56d2b0a1579cc9d7.gif?imageMogr2/auto-orient/strip" alt="在这里插入图片描述"><br>下面我拆分每一部分组件，详细对Scaffold中常用方法做讲解说明。</p>
+<h3 id="1-appBar"><a href="#1-appBar" class="headerlink" title="1. appBar"></a>1. appBar</h3><p>在前面的每一节课程中我们都可以找到appBar的身影，但是由于之前的课程重点不在appBar上，所以我们并没有对appBar展开过多的介绍，就仅仅是作为展示页面标题使用。</p>
+<p>我们先来看看Scaffold源码中对appBar的解释说明：<strong>一个展示在Scaffold顶部的APP Bar</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// An app bar to display at the top of the scaffold.</span></span><br><span class="line"><span class="keyword">final</span> PreferredSizeWidget appBar;</span><br></pre></td></tr></table></figure>
+
+
+<p>  通常我们会给根据不同的业务场景设置不同的AppBar，关于AppBar的构造方法大部分属性读者都可以根据属性名自解释，我就不贴出来赘述了，下面我举几个常用的例子</p>
+<h5 id="1-1-设置Title"><a href="#1-1-设置Title" class="headerlink" title="1.1 设置Title"></a>1.1 设置Title</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">"Scaffold 脚手架"</span>),</span><br><span class="line">       ),</span><br></pre></td></tr></table></figure>
+
+<p>标题居中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">"Scaffold 脚手架"</span>),</span><br><span class="line">        centerTitle: <span class="keyword">true</span>,</span><br><span class="line">       ),</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-d82bedaf86ec7684.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="默认标题位置">  <img src="http://upload-images.jianshu.io/upload_images/7274320-2e20fe9312f0cc36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="标题居中"></p>
+<h5 id="1-2设置左上角返回按钮"><a href="#1-2设置左上角返回按钮" class="headerlink" title="1.2设置左上角返回按钮"></a>1.2设置左上角返回按钮</h5><p>从上面的代码以及图片中我们看到Scaffold中默认为我们在appBar上指定了一个返回的箭头，点击箭头返回上一页，当然我们可以通过<code>leading</code>属性自定义左上角的图标，但是当我们指定了<code>leading</code>点击事件就需要我们自己单独处理了，也就是说，指定了<code>leading</code>之后，我们就没办法在点击箭头的时候结束当前页，但是我们可以自己实现这一操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">appBar: AppBar(</span><br><span class="line">         leading: GestureDetector(child: Icon(Icons.print),onTap: ()&#123;</span><br><span class="line">           Navigator.of(context).pop();</span><br><span class="line">         &#125;),  <span class="comment">//添加leading之后需要重写点击事件唤</span></span><br><span class="line">         title: Text(<span class="string">"Scaffold 脚手架"</span>),</span><br><span class="line">         centerTitle: <span class="keyword">true</span>,</span><br><span class="line">        ),</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-c9b29a0db60cb501.gif?imageMogr2/auto-orient/strip" alt="自定义左侧按钮点击事件"></p>
+<h5 id="1-3-右侧溢出菜单"><a href="#1-3-右侧溢出菜单" class="headerlink" title="1.3 右侧溢出菜单"></a>1.3 右侧溢出菜单</h5><p>在Flutter中我们通过Appbar的 actions属性设置菜单项，一般重要的菜单选项我们会直接放在右边bar上显示，非重要功能选项我们会通过PopupMenuButton以三个小点的形式放进折叠菜单里，下面我们结合源码看下效果图，读者一看便知。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">appBar: AppBar(</span><br><span class="line">          leading: GestureDetector(child: Icon(Icons.print),onTap: ()&#123;</span><br><span class="line">            Navigator.of(context).pop();</span><br><span class="line">          &#125;),  <span class="comment">//添加leading之后需要重写点击事件唤起抽屉菜单</span></span><br><span class="line">          title: Text(<span class="string">"Scaffold 脚手架"</span>),</span><br><span class="line">          actions: &lt;Widget&gt;[</span><br><span class="line">            IconButton(icon: Icon(Icons.message), onPressed: () &#123;&#125;),</span><br><span class="line">            IconButton(icon: Icon(Icons.access_alarm), onPressed: () &#123;&#125;),</span><br><span class="line">            PopupMenuButton(</span><br><span class="line">                onSelected: (String value) &#123;</span><br><span class="line">                  print(<span class="string">'-----------------$value'</span>);</span><br><span class="line">                &#125;,</span><br><span class="line">                itemBuilder: (BuildContext context) =&gt; [</span><br><span class="line">                      <span class="keyword">new</span> PopupMenuItem(value: <span class="string">"选项一的内容"</span>, child: <span class="keyword">new</span> Text(<span class="string">"选项一"</span>)),</span><br><span class="line">                      <span class="keyword">new</span> PopupMenuItem(value: <span class="string">"选项二的内容"</span>, child: <span class="keyword">new</span> Text(<span class="string">"选项二"</span>)),</span><br><span class="line">                      <span class="keyword">new</span> PopupMenuItem(value: <span class="string">"选项三的内容"</span>, child: <span class="keyword">new</span> Text(<span class="string">"选项三"</span>)),</span><br><span class="line">                    ])</span><br><span class="line">          ],</span><br><span class="line">          ),</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-832ad1dce81928ac.gif?imageMogr2/auto-orient/strip" alt="右侧菜单"></p>
+<h5 id="1-4-标题栏底部TabBar"><a href="#1-4-标题栏底部TabBar" class="headerlink" title="1.4 标题栏底部TabBar"></a>1.4 标题栏底部TabBar</h5><p>在原生Android中我们很熟悉的就是利用TabLayout设置标题栏下方的tab切换效果，在Flutter中我们通过给AppBar的bottom属性设置TabBar来完成这一效果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    bottom: TabBar(</span><br><span class="line">            controller: _tabController,</span><br><span class="line">            tabs: topTabLists</span><br><span class="line">                .map((element) =&gt; Tab(</span><br><span class="line">                      text: element,</span><br><span class="line">                    ))</span><br><span class="line">                .toList(),</span><br><span class="line"><span class="comment">//            onTap: (index) =&gt; &#123;&#125;,</span></span><br><span class="line">          )),</span><br></pre></td></tr></table></figure>
+
+<p>使用TabBar必须传入controller属性，我们通过initState()方法初始化_tabController</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>.initState();</span><br><span class="line">  <span class="comment">//初始化顶部TabController</span></span><br><span class="line">  _tabController = TabController(length: topTabLists.length, vsync: <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="http://upload-images.jianshu.io/upload_images/7274320-f64d2e3223be5670.gif?imageMogr2/auto-orient/strip" alt="在这里插入图片描述"><br>Tab属性设置icon图标+文字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> bottom: TabBar(</span><br><span class="line">            controller: _tabController,</span><br><span class="line">            tabs: topTabLists</span><br><span class="line">                .map((element) =&gt; Tab(</span><br><span class="line">                      text: element,</span><br><span class="line">                      icon: Icon(Icons.print),</span><br><span class="line">                    ))</span><br><span class="line">                .toList(),</span><br><span class="line"><span class="comment">//            onTap: (index) =&gt; &#123;&#125;,</span></span><br><span class="line">          )),</span><br></pre></td></tr></table></figure>
+
+<p> <img src="http://upload-images.jianshu.io/upload_images/7274320-b3128cbbd0e621c9.gif?imageMogr2/auto-orient/strip" alt="在这里插入图片描述"></p>
+<h3 id="2-body部分"><a href="#2-body部分" class="headerlink" title="2.body部分"></a>2.body部分</h3><p> 根据Scaffold页面布局的上下顺序，下面我们讲解第二部分<code>body</code>部分。关于body部分在前面的课程中，我们使用了很多次了，也没什么需要特别说的地方，这里我就不展开介绍了，body作为一个页面的主要视图部分，可以传入任意指定的Widget，可现实在屏幕中央，这里我就不过多赘述了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">body: Container(</span><br><span class="line">      child: Text(<span class="string">"内容区域"</span>),</span><br><span class="line">    ),</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-抽屉菜单"><a href="#3-抽屉菜单" class="headerlink" title="3.抽屉菜单"></a>3.抽屉菜单</h3><p>在文章开题的时候，我提到了抽屉菜单可以通过drawer、endDrawer指定左右两侧打开的抽屉菜单。下面我们就来看下效果。</p>
+<p>左侧抽屉</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drawer: MyDrawer(), <span class="comment">//MyDrawer详细代码在下面</span></span><br></pre></td></tr></table></figure>
+
+<p>右侧抽屉</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">endDrawer: MyDrawer(), <span class="comment">//MyDrawer详细代码在下面</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-d91012c050e11450.gif?imageMogr2/auto-orient/strip" alt="左侧抽屉">  <img src="http://upload-images.jianshu.io/upload_images/7274320-263f65f87db75b26.gif?imageMogr2/auto-orient/strip" alt="右侧抽屉"><br>上述抽屉相关的<code>MyDrawer</code>代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDrawer</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="function">Widget <span class="title">build</span><span class="params">(BuildContext context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Drawer(</span><br><span class="line">        child: Column(</span><br><span class="line">      crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        Padding(</span><br><span class="line">          padding: <span class="keyword">const</span> EdgeInsets.only(top: <span class="number">88.0</span>, bottom: <span class="number">30.0</span>),</span><br><span class="line">          child: Row(</span><br><span class="line">            children: &lt;Widget&gt;[</span><br><span class="line">              Padding(</span><br><span class="line">                padding: <span class="keyword">const</span> EdgeInsets.symmetric(horizontal: <span class="number">16.0</span>),</span><br><span class="line">                child: ClipOval(</span><br><span class="line">                  child: Image.network(</span><br><span class="line">                    <span class="string">"https://avatar.csdn.net/6/0/6/3_xieluoxixi.jpg"</span>,</span><br><span class="line">                    width: <span class="number">60</span>,</span><br><span class="line">                  ),</span><br><span class="line">                ),</span><br><span class="line">              ),</span><br><span class="line">              Text(</span><br><span class="line">                <span class="string">"谢栋"</span>,</span><br><span class="line">                style: TextStyle(fontWeight: FontWeight.bold),</span><br><span class="line">              )</span><br><span class="line">            ],</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">        Expanded(</span><br><span class="line">          child: ListView(</span><br><span class="line">            children: &lt;Widget&gt;[</span><br><span class="line">              ListTile(</span><br><span class="line">                leading: <span class="function"><span class="keyword">const</span> <span class="title">Icon</span><span class="params">(Icons.settings)</span>,</span></span><br><span class="line"><span class="function">                title: <span class="keyword">const</span> <span class="title">Text</span><span class="params">(<span class="string">'个人设置'</span>)</span>,</span></span><br><span class="line"><span class="function">              ),</span></span><br><span class="line"><span class="function">              <span class="title">ListTile</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">                leading: <span class="keyword">const</span> Icon(Icons.live_help)</span>,</span></span><br><span class="line"><span class="function">                title: <span class="keyword">const</span> <span class="title">Text</span><span class="params">(<span class="string">'帮助说明'</span>)</span>,</span></span><br><span class="line"><span class="function">              ),</span></span><br><span class="line"><span class="function">              <span class="title">ListTile</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">                leading: <span class="keyword">const</span> Icon(Icons.settings)</span>,</span></span><br><span class="line"><span class="function">                title: <span class="keyword">const</span> <span class="title">Text</span><span class="params">(<span class="string">'个人设置'</span>)</span>,</span></span><br><span class="line"><span class="function">              ),</span></span><br><span class="line"><span class="function">              <span class="title">ListTile</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">                leading: <span class="keyword">const</span> Icon(Icons.live_help)</span>,</span></span><br><span class="line"><span class="function">                title: <span class="keyword">const</span> <span class="title">Text</span><span class="params">(<span class="string">'帮助说明'</span>)</span>,</span></span><br><span class="line"><span class="function">              ),</span></span><br><span class="line"><span class="function">            ],</span></span><br><span class="line"><span class="function">          ),</span></span><br><span class="line"><span class="function">        )</span></span><br><span class="line"><span class="function">      ],</span></span><br><span class="line"><span class="function">    ))</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-floatingActionButton"><a href="#4-floatingActionButton" class="headerlink" title="4.floatingActionButton"></a>4.floatingActionButton</h3><p>floatingActionButton在前面讲解Button章节中我们讲解过，知识点也比较简单，就是在页面布局快速构建出一个悬浮按钮。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: ()&#123;</span><br><span class="line">          print(<span class="string">"---------"</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ),</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-09becd91df44dc3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="在这里插入图片描述"><br>我们可以通过在Scaffold脚手架中指定floatingActionButtonLocation来指定floatingActionButton显示的位置。<br><img src="http://upload-images.jianshu.io/upload_images/7274320-50997608c35a95fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="在这里插入图片描述"><br>各个位置属性基本见名知意，我就不逐个写效果图展示了，下面只贴上一个悬停在底部导航栏上的样式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">floatingActionButtonLocation:</span><br><span class="line">         FloatingActionButtonLocation.centerDocked, <span class="comment">//设置FloatingActionButton的位置</span></span><br><span class="line">   );</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-e66c9d5a43abc8e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="在这里插入图片描述"></p>
+<h3 id="5-底部导航栏-bottomNavigationBar"><a href="#5-底部导航栏-bottomNavigationBar" class="headerlink" title="5.底部导航栏 bottomNavigationBar"></a>5.底部导航栏 bottomNavigationBar</h3><p>bottomNavigationBar的使用场景还比较多，一般我们的多页面app都会通过底部的Tab来切换App首页展示的不同内容，在Flutter的Scaffold中为我们提供了快捷用于构建底部Tab的方法，我们通过给BottomNavigationBar的<code>Items</code>属性设置需要展示的BottomNavigationBarItem数组即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">bottomNavigationBar: BottomNavigationBar(</span><br><span class="line">       <span class="comment">//不设置该属性多于三个不显示颜色</span></span><br><span class="line">       type: BottomNavigationBarType.fixed,</span><br><span class="line">       items: [</span><br><span class="line">         BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(<span class="string">"首页"</span>)),</span><br><span class="line">         BottomNavigationBarItem(icon: Icon(Icons.message), title: Text(<span class="string">"消息"</span>)),</span><br><span class="line">         BottomNavigationBarItem(</span><br><span class="line">             icon: Icon(Icons.add_a_photo), title: Text(<span class="string">"动态"</span>)),</span><br><span class="line">         BottomNavigationBarItem(icon: Icon(Icons.person), title: Text(<span class="string">"我的"</span>))</span><br><span class="line">       ],</span><br><span class="line">       currentIndex: _currentBottomIndex,</span><br><span class="line">       fixedColor: Colors.blue,</span><br><span class="line">       onTap: (index) =&gt; _onBottomTabChange(index),</span><br><span class="line">     ),</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-e8321ca6156754d1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="在这里插入图片描述"><br>这里有个细节需要说一下，有读者私下里问我说设置了bottomNavigationBar的属性其中tab为三个的时候可以正常显示，但是<code>多于三个就变成白色了，不能正常显示</code>。
+<img src="http://upload-images.jianshu.io/upload_images/7274320-47b8d734d6729c4c.gif?imageMogr2/auto-orient/strip" alt="正常显示">   <img src="http://upload-images.jianshu.io/upload_images/7274320-a780afd5080aa50c.gif?imageMogr2/auto-orient/strip" alt="显示白色，切换效果不明显"></p>
+<p>这里我从源码角度上给读者解读一下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// If [fixedColor] is null then the theme's primary color,</span></span><br><span class="line"><span class="comment">/// [ThemeData.primaryColor], is used. However if [BottomNavigationBar.type] is</span></span><br><span class="line"><span class="comment">/// [BottomNavigationBarType.shifting] then [fixedColor] is ignored.</span></span><br><span class="line">BottomNavigationBar(&#123;</span><br><span class="line">  Key key,</span><br><span class="line">  <span class="meta">@required</span> <span class="keyword">this</span>.items,</span><br><span class="line">  <span class="keyword">this</span>.onTap,</span><br><span class="line">  <span class="keyword">this</span>.currentIndex = <span class="number">0</span>,</span><br><span class="line">  BottomNavigationBarType type,</span><br><span class="line">  <span class="keyword">this</span>.fixedColor,</span><br><span class="line">  <span class="keyword">this</span>.iconSize = <span class="number">24.0</span>,</span><br><span class="line">&#125;) : <span class="keyword">assert</span>(items != <span class="keyword">null</span>),</span><br><span class="line">     <span class="keyword">assert</span>(items.length &gt;= <span class="number">2</span>),</span><br><span class="line">     <span class="keyword">assert</span>(</span><br><span class="line">      items.every((BottomNavigationBarItem item) =&gt; item.title != <span class="keyword">null</span>) == <span class="keyword">true</span>,</span><br><span class="line">      <span class="string">'Every item must have a non-null title'</span>,</span><br><span class="line">     ),</span><br><span class="line">     <span class="keyword">assert</span>(<span class="number">0</span> &lt;= currentIndex &amp;&amp; currentIndex &lt; items.length),</span><br><span class="line">     <span class="keyword">assert</span>(iconSize != <span class="keyword">null</span>),</span><br><span class="line">     type = type ?? (items.length &lt;= <span class="number">3</span> ? BottomNavigationBarType.fixed : BottomNavigationBarType.shifting),</span><br><span class="line">     <span class="keyword">super</span>(key: key);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-68029acff90c2086.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="在这里插入图片描述"><br>从源码上的这段标红线的地方，我们可以读到，当<code>BottomNavigationBar中的items数量小于等于3时，type为BottomNavigationBarType.fixed，大于3则为BottomNavigationBarType.shifting</code>，所以我们只需在代码中重载type属性，大于3个的时候设置type值为<code>BottomNavigationBarType.fixed</code>即可。我在一开始的代码注释中也解释了这个问题。</p>
+<p><strong>UI小特效</strong><br>在实现底部导航栏时，Flutter还为我们提供了一个Material组件中的类似‘“镶嵌”效果，使用BottomAppBar配合FloatingActionButton完成，文字描述可能云里雾里的。</p>
+<p>一图胜千言<br><img src="http://upload-images.jianshu.io/upload_images/7274320-4fa84937bf58d1c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="悬浮按钮镶嵌在Bar上"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//与FloatingActionButton配合实现"打洞"效果</span></span><br><span class="line">      bottomNavigationBar: BottomAppBar(</span><br><span class="line">        color: Colors.white,</span><br><span class="line">        shape: CircularNotchedRectangle(), <span class="comment">// 底部导航栏打一个圆形的洞</span></span><br><span class="line">        child: Row(</span><br><span class="line">          children: [</span><br><span class="line">            Tab(text: <span class="string">"首页"</span>, icon: Icon(Icons.home)),</span><br><span class="line">            Tab(text: <span class="string">"消息"</span>, icon: Icon(Icons.message)),</span><br><span class="line">            Tab(text: <span class="string">"动态"</span>, icon: Icon(Icons.add_a_photo)),</span><br><span class="line">            Tab(text: <span class="string">"我的"</span>, icon: Icon(Icons.person)),</span><br><span class="line"></span><br><span class="line">          ],</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.spaceAround, <span class="comment">//均分底部导航栏横向空间</span></span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: () =&gt; _onFabClick,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButtonLocation:</span><br><span class="line">          FloatingActionButtonLocation.centerDocked, <span class="comment">//设置FloatingActionButton的位置</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+
+<p>虽然我们在上面借助<code>BottomNavigationBar</code>也实现了类似的效果，但是前者是直接压在导航栏上面的，而后者是嵌入进去的，效果更逼真。读者可对比下方的效果图。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/7274320-1665a2121e120ebf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="直接压在导航栏上">  <img src="http://upload-images.jianshu.io/upload_images/7274320-c19377455c1700e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="悬浮按钮镶嵌在Bar上"><br>限于篇幅问题，本篇博文的完整代码我就不在此贴出来了，有需要的读者可以去我的github下载源码：<br><a href="https://github.com/xiedong11/flutter_app/blob/master/lib/pages/simpleWidget/ScaffoldPage.dart" target="_blank" rel="noopener">ScaffoldPage.dart</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/12/Flutter入门进阶之旅（十五）ListView下拉刷新-上拉加载更多/" rel="next" title="Flutter入门进阶之旅（十五）ListView下拉刷新&上拉加载更多">
+                <i class="fa fa-chevron-left"></i> Flutter入门进阶之旅（十五）ListView下拉刷新&上拉加载更多
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/xiedong.png" alt="谢栋">
+            
+              <p class="site-author-name" itemprop="name">谢栋</p>
+              <div class="site-description motion-element" itemprop="description">flutter入门进阶之旅</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/xiedong11" title="GitHub &rarr; https://github.com/xiedong11" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:xiedong11@aliyun.com" title="E-Mail &rarr; mailto:xiedong11@aliyun.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/xieluoxixi" title="新浪微博 &rarr; https://weibo.com/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/xieluoxixi" title="简书博客 &rarr; https://blog.csdn.net/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>简书博客</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/xieluoxixi" title="CSDN &rarr; https://blog.csdn.net/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://juejin.im/user/5cb416cef265da03893286ea" title="掘金 &rarr; https://juejin.im/user/5cb416cef265da03893286ea" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#课程学习目标"><span class="nav-number">1.</span> <span class="nav-text">课程学习目标</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#了解并掌握Scaffold中提供的快速搭建页面的脚手架方法"><span class="nav-number">1.0.1.</span> <span class="nav-text">了解并掌握Scaffold中提供的快速搭建页面的脚手架方法</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#Scaffold课程完整效果图"><span class="nav-number">2.</span> <span class="nav-text">Scaffold课程完整效果图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-appBar"><span class="nav-number">3.</span> <span class="nav-text">1. appBar</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-设置Title"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.1 设置Title</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2设置左上角返回按钮"><span class="nav-number">3.0.2.</span> <span class="nav-text">1.2设置左上角返回按钮</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-右侧溢出菜单"><span class="nav-number">3.0.3.</span> <span class="nav-text">1.3 右侧溢出菜单</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-标题栏底部TabBar"><span class="nav-number">3.0.4.</span> <span class="nav-text">1.4 标题栏底部TabBar</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-body部分"><span class="nav-number">4.</span> <span class="nav-text">2.body部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-抽屉菜单"><span class="nav-number">5.</span> <span class="nav-text">3.抽屉菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-floatingActionButton"><span class="nav-number">6.</span> <span class="nav-text">4.floatingActionButton</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-底部导航栏-bottomNavigationBar"><span class="nav-number">7.</span> <span class="nav-text">5.底部导航栏 bottomNavigationBar</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢栋</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
