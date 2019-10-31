@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言 在前面的章节学习中我们已经掌握了从最基本的hello flutter到各种基本Widget、各种布局的使用再到多页面切换路由的使用还有各种炫酷的提示跟dialog，还有关于网络请求库Dio的使用，至此我们完全可以使用flutter去开发一款独立可运行的app了，但是基于现阶段flutter技术栈还不是太成熟，纯flutter项目上线风险还是比较大，所以跨平台的混合开发模式自然还是现阶段尝试f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目">
+<meta property="og:url" content="http://yoursite.com/2019/10/31/Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目/index.html">
+<meta property="og:site_name" content="flutter入门进阶之旅">
+<meta property="og:description" content="前言 在前面的章节学习中我们已经掌握了从最基本的hello flutter到各种基本Widget、各种布局的使用再到多页面切换路由的使用还有各种炫酷的提示跟dialog，还有关于网络请求库Dio的使用，至此我们完全可以使用flutter去开发一款独立可运行的app了，但是基于现阶段flutter技术栈还不是太成熟，纯flutter项目上线风险还是比较大，所以跨平台的混合开发模式自然还是现阶段尝试f">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191028172542568.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191028174931515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191028175430459.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191031084741783.gif">
+<meta property="og:updated_time" content="2019-10-31T05:31:10.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目">
+<meta name="twitter:description" content="前言 在前面的章节学习中我们已经掌握了从最基本的hello flutter到各种基本Widget、各种布局的使用再到多页面切换路由的使用还有各种炫酷的提示跟dialog，还有关于网络请求库Dio的使用，至此我们完全可以使用flutter去开发一款独立可运行的app了，但是基于现阶段flutter技术栈还不是太成熟，纯flutter项目上线风险还是比较大，所以跨平台的混合开发模式自然还是现阶段尝试f">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191028172542568.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/10/31/Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目 | flutter入门进阶之旅</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">flutter入门进阶之旅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/xiedong11" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/31/Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢栋">
+      <meta itemprop="description" content="flutter入门进阶之旅">
+      <meta itemprop="image" content="/images/xiedong.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="flutter入门进阶之旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flutter入门进阶之旅（十八）Flutter项目打包成aar集成到原生Android项目
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-31 13:30:22 / 修改时间：13:31:10" itemprop="dateCreated datePublished" datetime="2019-10-31T13:30:22+08:00">2019-10-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>在前面的章节学习中我们已经掌握了从最基本的<code>hello flutter</code>到各种基本Widget、各种布局的使用再到多页面切换路由的使用还有各种炫酷的提示跟dialog，还有关于网络请求库Dio的使用，至此我们完全可以使用flutter去开发一款独立可运行的app了，但是基于现阶段flutter技术栈还不是太成熟，纯flutter项目上线风险还是比较大，所以跨平台的混合开发模式自然还是现阶段尝试flutter的主流方式，今天的分享我就跟大家一块把我们写好的flutter项目打包成aar文件嵌入到现有的Android项目中去。</p>
+</blockquote>
+<h4 id="课程目标"><a href="#课程目标" class="headerlink" title="课程目标"></a>课程目标</h4><ul>
+<li>掌握flutter打包成aar的整体流程</li>
+<li>利用fat-aar把flutter项目中的三方依赖打入aar资源包中</li>
+</ul>
+<h3 id="项目准备："><a href="#项目准备：" class="headerlink" title="项目准备："></a>项目准备：</h3><blockquote>
+<p>flutter端项目我采用的是本专栏的实例代码项目：<a href="https://github.com/xiedong11/flutter_app" target="_blank" rel="noopener">https://github.com/xiedong11/flutter_app</a>，Android端原生项目为新建的一个hello world项目，flutter端的相关配置我会上传到github仓库中，原生Android项目比较简单，我只在本博客中贴出部分关键代码</p>
+</blockquote>
+<h3 id="1-flutter项目打包成aar"><a href="#1-flutter项目打包成aar" class="headerlink" title="1.flutter项目打包成aar"></a>1.flutter项目打包成aar</h3><p><strong>flutter端项目工程目录</strong><br><img src="https://img-blog.csdnimg.cn/20191028172542568.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70" alt="Flutter端项目工程目录"><br>上面截图的flutter工程需要经过我们的改造才能作为一个aar的形式存在，要被打包成aar的flutter端的项目是作为一个独立的module运行在宿主app（原生Android）中，所以我们需要修改两个地方，让我们打包出来的产物变成aar而不是独立运行的apk。</p>
+<h5 id="1-1修改Android下的-build-gradle"><a href="#1-1修改Android下的-build-gradle" class="headerlink" title="1.1修改Android下的 build.gradle"></a>1.1修改Android下的 build.gradle</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 1. 生成aar产物，需要把`application`改为`library`</span></span><br><span class="line">apply plugin: <span class="string">'com.android.library'</span></span><br><span class="line">apply from: <span class="string">"$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"</span></span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">28</span></span><br><span class="line"></span><br><span class="line">    lintOptions &#123;</span><br><span class="line">        disable <span class="string">'InvalidPackage'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="comment">// 2. flutter 作为寄存于其他app中的产物，所以不应该存在applicationId，所以注释掉该行.</span></span><br><span class="line">        <span class="comment">//applicationId "com.zhuandian.flutterapp"</span></span><br><span class="line">        minSdkVersion <span class="number">16</span></span><br><span class="line">        targetSdkVersion <span class="number">28</span></span><br><span class="line">        versionCode flutterVersionCode.toInteger()</span><br><span class="line">        versionName flutterVersionName</span><br><span class="line">        testInstrumentationRunner <span class="string">"androidx.test.runner.AndroidJUnitRunner"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> Add your own signing config for the release build.</span></span><br><span class="line">            <span class="comment">// Signing with the debug keys for now, so `flutter run --release` works.</span></span><br><span class="line">            signingConfig signingConfigs.debug</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-2-修改Androidmanifest-xml文件"><a href="#1-2-修改Androidmanifest-xml文件" class="headerlink" title="1. 2  修改Androidmanifest.xml文件"></a>1. 2  修改Androidmanifest.xml文件</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;manifest xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">    <span class="keyword">package</span>=<span class="string">"com.zhuandian.flutterapp"</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.INTERNET"</span> /&gt;</span><br><span class="line">   </span><br><span class="line">    &lt;!--<span class="number">1</span>.项目作为子项目寄存于原生app中，不需要icon、label等属性，这里直接省去各种配置即可--&gt;</span><br><span class="line">    &lt;application&gt;</span><br><span class="line">        &lt;!--android:name=<span class="string">"io.flutter.app.FlutterApplication"</span>--&gt;</span><br><span class="line">        &lt;!--android:icon=<span class="string">"@mipmap/ic_launcher"</span>--&gt;</span><br><span class="line">        &lt;!--android:label=<span class="string">"flutter_app"</span>&gt;--&gt;</span><br><span class="line">        &lt;activity</span><br><span class="line">            android:name=<span class="string">".MainActivity"</span></span><br><span class="line">            android:configChanges=<span class="string">"orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"</span></span><br><span class="line">            android:hardwareAccelerated=<span class="string">"true"</span></span><br><span class="line">            android:launchMode=<span class="string">"singleTop"</span></span><br><span class="line">            android:theme=<span class="string">"@style/LaunchTheme"</span></span><br><span class="line">            android:windowSoftInputMode=<span class="string">"adjustResize"</span>&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &lt;!--<span class="number">2</span>.项目作为子项目寄存于原生app中，入口acitvity不需要配置LAUNCHER，不然应用集成到宿主app中，启动会在桌面上生成两个应用图标--&gt;</span><br><span class="line">           </span><br><span class="line">            &lt;!--&lt;meta-data--&gt;</span><br><span class="line">                &lt;!--android:name=<span class="string">"io.flutter.app.android.SplashScreenUntilFirstFrame"</span>--&gt;</span><br><span class="line">                &lt;!--android:value=<span class="string">"true"</span> /&gt;--&gt;</span><br><span class="line"></span><br><span class="line">            &lt;!--&lt;intent-filter&gt;--&gt;</span><br><span class="line">                &lt;!--&lt;action android:name=<span class="string">"android.intent.action.MAIN"</span> /&gt;--&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--&lt;category android:name=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;--&gt;</span><br><span class="line">            &lt;!--&lt;/intent-filter&gt;--&gt;</span><br><span class="line">        &lt;/activity&gt;</span><br><span class="line">        &lt;activity android:name=".SecondActivity"&gt;&lt;/activity&gt;</span><br><span class="line">    &lt;/application&gt;</span><br><span class="line"></span><br><span class="line">&lt;/manifest&gt;</span><br></pre></td></tr></table></figure>
+
+<p>需要修改的地方，我都在源码里留注释了，这里就不展开赘述了，下面我们来通过gradle获得编译好的<code>aar</code>产物</p>
+<p>因为在build.gradle 中，我们把<code>apply plugin: &#39;com.android.application&#39;</code>修改成了，<code>apply plugin: &#39;com.android.library&#39;</code><br>所以，现在通过Terminal中我执行<code>gradlew assembleRelease</code>编译出的产物会有原来的apk变成aar文件，文件输出目录为项目根目录下的<code>/bulid/app/outputs/aar</code><br>如下图所示：<br><img src="https://img-blog.csdnimg.cn/20191028174931515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="1-3-Android端项目配置接入aar依赖"><a href="#1-3-Android端项目配置接入aar依赖" class="headerlink" title="1.3 Android端项目配置接入aar依赖"></a>1.3 Android端项目配置接入aar依赖</h5><p>1.3.1 新建原生Android项目，我上述打包产出的aar文件作为依赖放入libs文件夹<br><img src="https://img-blog.csdnimg.cn/20191028175430459.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly94aWVkb25nLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>1.3.2 修改<code>dependencies</code>节点下的<code>fileTree</code>依赖配置，支持引入aar依赖支持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;,&apos;*.aar&apos;])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="function">implementation <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>,<span class="string">'*.aar'</span>])</span></span></span><br><span class="line"><span class="function">    ...</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>1.3.3 在原生Android项目中写一个简单的按钮测试flutter项目</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">override fun <span class="title">onCreate</span><span class="params">(savedInstanceState: Bundle?)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line">        <span class="comment">//初始化flutter运行环境</span></span><br><span class="line">        FlutterMain.startInitialization(<span class="keyword">this</span>)</span><br><span class="line">        tv_test_aar.setOnClickListener &#123;</span><br><span class="line">            startActivity(Intent(<span class="keyword">this</span>, com.zhuandian.flutterapp.MainActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>))</span></span><br><span class="line"><span class="class">        &#125;</span></span><br><span class="line"><span class="class">    &#125;</span></span><br><span class="line"><span class="class">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>至此，把flutter项目打包成aar导入到原生Android项目中的所有工程配置已经结束了，读者可以测试上上述整个过程；但有时候我们的flutter项目并不是单纯的flutter官方代码，开发过程中少不了引入一些三方依赖，像上节课我们讲到的Dio网络请求库，或者是通过<code>pubspec.yaml</code>引入的其他开源工具类，这种情况下，通过上边的配置方式，你会发现第三方的依赖代码是打不进aar包里的，下面我们就讲解一下借助<code>fat-aar</code>的形式把三方依赖代码打入aar包中去</p>
+</blockquote>
+<h3 id="2-flutter项目中存在三方依赖"><a href="#2-flutter项目中存在三方依赖" class="headerlink" title="2.flutter项目中存在三方依赖"></a>2.flutter项目中存在三方依赖</h3><p>通过上边的配置，我们只能把纯flutter项目打包成aar文件，换句话说，如果我们的flutter项目存在三方依赖是不能正常打包进flutter产物里的，这个时候我们就需要通过在Android原生项目中引入<code>fat-aar</code>配置，确保把flutter项目中的三方依赖正常打包进去flutter产物中去。</p>
+<p>2.1修改项目工程目录的build.gradle文件，引入fat-aar支持</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:3.4.1'</span></span><br><span class="line">        <span class="comment">//引入fat-aar支持</span></span><br><span class="line">        classpath <span class="string">'com.kezong:fat-aar:1.1.7'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.2 在上边第一部分配置app文件下build.gradle基础上，增加fat-aar相关配置，这里为了切换aar library运行环境，我引入isAarLibrary标志位作为切换环境开关，方便工程配置，具体代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//是否作为依赖</span></span><br><span class="line"><span class="keyword">boolean</span> isAarLibrary = <span class="keyword">true</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isAarLibrary) &#123;</span><br><span class="line">    apply plugin: <span class="string">'com.android.library'</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    apply plugin: <span class="string">'com.android.application'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">apply from: <span class="string">"$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isAarLibrary) &#123;</span><br><span class="line">    <span class="comment">//引入fat-aar</span></span><br><span class="line">    apply plugin: <span class="string">'com.kezong.fat-aar'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">28</span></span><br><span class="line"></span><br><span class="line">    lintOptions &#123;</span><br><span class="line">        disable <span class="string">'InvalidPackage'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).</span></span><br><span class="line">        <span class="keyword">if</span> (!isAarLibrary) &#123;</span><br><span class="line">            applicationId <span class="string">"com.zhuandian.flutterapp"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        minSdkVersion <span class="number">16</span></span><br><span class="line">        targetSdkVersion <span class="number">28</span></span><br><span class="line">        versionCode flutterVersionCode.toInteger()</span><br><span class="line">        versionName flutterVersionName</span><br><span class="line">        testInstrumentationRunner <span class="string">"androidx.test.runner.AndroidJUnitRunner"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> Add your own signing config for the release build.</span></span><br><span class="line">            <span class="comment">// Signing with the debug keys for now, so `flutter run --release` works.</span></span><br><span class="line">            signingConfig signingConfigs.debug</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">flutter &#123;</span><br><span class="line">    source <span class="string">'../..'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="string">'androidx.constraintlayout:constraintlayout:1.1.3'</span></span><br><span class="line">    testImplementation <span class="string">'junit:junit:4.12'</span></span><br><span class="line">    androidTestImplementation <span class="string">'androidx.test:runner:1.1.0'</span></span><br><span class="line">    androidTestImplementation <span class="string">'androidx.test.espresso:espresso-core:3.1.0'</span></span><br><span class="line">    implementation <span class="string">'androidx.appcompat:appcompat:1.0.0'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isAarLibrary) &#123;</span><br><span class="line">        <span class="comment">//TODO 添加fat-aar处理flutter打包成aar中三方依赖</span></span><br><span class="line">        def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()</span><br><span class="line">        def plugins = <span class="keyword">new</span> Properties()</span><br><span class="line">        def pluginsFile = <span class="keyword">new</span> File(flutterProjectRoot.toFile(), <span class="string">'.flutter-plugins'</span>)</span><br><span class="line">        <span class="keyword">if</span> (pluginsFile.exists()) &#123;</span><br><span class="line">            pluginsFile.withReader(<span class="string">'UTF-8'</span>) &#123; reader -&gt; plugins.load(reader) &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        plugins.each &#123; name, _ -&gt;</span><br><span class="line">            println name</span><br><span class="line">            <span class="function">embed <span class="title">project</span><span class="params">(path: <span class="string">":$name"</span>, configuration: <span class="string">'default'</span>)</span></span></span><br><span class="line"><span class="function">        &#125;</span></span><br><span class="line"><span class="function">    &#125;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.3 AndroidManifest.xml清单文件中不需要增加额外配置，原生Android端唤起flutter项目aar包的方式也不需要修改，整个引入fat-aar的过程只是为了确保能把flutter项目中的三方依赖代码打入到flutter产物中去，所以关于flutter打包成aar的操作跟第一步保持一致就行，<code>第二步的配置，只是为了确保flutter项目中的三方依赖能正常打包进flutter产物中去</code></p>
+<p>效果图是我把本专栏的相关代码作为一个aar集成到一个新建的原生Android项目中，效果图如下：<br><img src="https://img-blog.csdnimg.cn/20191031084741783.gif" alt="在这里插入图片描述"></p>
+<p>项目的完整代码配置在<a href="https://github.com/xiedong11/flutter_app" target="_blank" rel="noopener">https://github.com/xiedong11/flutter_app</a> 中，读者可以参考具体配置细节，笔者在写本篇博文打包aar时的flutter 环境stable版本为 <code>flutter v1.9.1</code>，读者尽量用官方稳定版的代码做测试。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/29/Flutter入门进阶之旅（十七）Flutter-dio网络请求/" rel="next" title="Flutter入门进阶之旅（十七）Flutter dio网络请求">
+                <i class="fa fa-chevron-left"></i> Flutter入门进阶之旅（十七）Flutter dio网络请求
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/xiedong.png" alt="谢栋">
+            
+              <p class="site-author-name" itemprop="name">谢栋</p>
+              <div class="site-description motion-element" itemprop="description">flutter入门进阶之旅</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/xiedong11" title="GitHub &rarr; https://github.com/xiedong11" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:xiedong11@aliyun.com" title="E-Mail &rarr; mailto:xiedong11@aliyun.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/xieluoxixi" title="新浪微博 &rarr; https://weibo.com/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>新浪微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/xieluoxixi" title="简书博客 &rarr; https://blog.csdn.net/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>简书博客</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/xieluoxixi" title="CSDN &rarr; https://blog.csdn.net/xieluoxixi" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://juejin.im/user/5cb416cef265da03893286ea" title="掘金 &rarr; https://juejin.im/user/5cb416cef265da03893286ea" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#课程目标"><span class="nav-number">1.1.</span> <span class="nav-text">课程目标</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目准备："><span class="nav-number">2.</span> <span class="nav-text">项目准备：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-flutter项目打包成aar"><span class="nav-number">3.</span> <span class="nav-text">1.flutter项目打包成aar</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1修改Android下的-build-gradle"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.1修改Android下的 build.gradle</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-修改Androidmanifest-xml文件"><span class="nav-number">3.0.2.</span> <span class="nav-text">1. 2  修改Androidmanifest.xml文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-Android端项目配置接入aar依赖"><span class="nav-number">3.0.3.</span> <span class="nav-text">1.3 Android端项目配置接入aar依赖</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#2-flutter项目中存在三方依赖"><span class="nav-number">4.</span> <span class="nav-text">2.flutter项目中存在三方依赖</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢栋</span>
+
+
+
+    <div style="width:300px;margin:0 auto; padding:5px 0;">
+
+                                <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502039064" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png" style="float:left;">
+                                    <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:gray;font-size: 0.6rem">
+                                        京公网安备 11010502039064号</p></a>
+     </div>
+
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
